@@ -1,6 +1,7 @@
 package com.fatec.back.domain.Patient;
 
+import java.time.LocalDate;
 
-public class PatientDTO {
+public record PatientDTO (LocalDate birthday, String patientCondition, Long userId){
     
 }
