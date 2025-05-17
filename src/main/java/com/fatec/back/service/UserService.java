@@ -29,7 +29,7 @@ public class UserService {
             existingUser.setEmail(data.email());
             existingUser.setPassword(data.password());
             existingUser.setName(data.name());
-            existingUser.setRole(data.role());
+            // existingUser.setRole(data.role());
             User updatedBy = repository.findById(data.userId())
             .orElseThrow(() -> new RuntimeException("Usuário updated_by não encontrado"));
             existingUser.setUpdatedBy(updatedBy);

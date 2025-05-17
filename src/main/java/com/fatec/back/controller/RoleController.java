@@ -43,7 +43,7 @@ public class RoleController {
                       .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         boolean deleted = service.deleteRole(id);
         return deleted ? ResponseEntity.noContent().build()
