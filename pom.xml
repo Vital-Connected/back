@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fatec</groupId>
-	<artifactId>pi_back</artifactId>
+	<artifactId>back</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pi_back</name>
+	<name>back</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

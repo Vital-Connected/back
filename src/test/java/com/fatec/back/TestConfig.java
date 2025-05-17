@@ -1,4 +1,4 @@
-package com.fatec.pi_back;
+package com.fatec.back;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Configuration;
