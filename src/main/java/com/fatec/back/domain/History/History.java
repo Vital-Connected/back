@@ -18,12 +18,14 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "history")
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class History {
 
