@@ -2,12 +2,15 @@ package com.fatec.back.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fatec.back.domain.User.User;
-import com.fatec.back.domain.User.UserRequestDTO;
 import com.fatec.back.service.UserService;
 
 @RestController
@@ -36,11 +38,16 @@ public class UserController {
                    .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody UserRequestDTO body) {
-        Optional<User> updatedUser = service.updateUser(id, body);
-        return updatedUser.map(ResponseEntity::ok)
-                          .orElse(ResponseEntity.notFound().build());
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+        try {
+            User updatedUser = service.updateUSer(id, updates);
+            return ResponseEntity.ok(updatedUser);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("password/{id}")
@@ -52,7 +59,7 @@ public class UserController {
                         .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("access/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> toggleAccess(@PathVariable Long id) {
         boolean deleted = service.toggleUserAccess(id);
         return deleted ? ResponseEntity.noContent().build()

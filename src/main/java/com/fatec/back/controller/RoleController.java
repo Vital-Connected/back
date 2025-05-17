@@ -36,14 +36,15 @@ public class RoleController {
         return ResponseEntity.ok(saved);
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Role> update(@PathVariable Long id, @RequestBody RoleDTO body) {
         Optional<Role> updated = service.updateRole(id, body);
         return updated.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+                    .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/delete/{id}")
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> softDelete(@PathVariable Long id) {
         boolean deleted = service.deleteRole(id);
         return deleted ? ResponseEntity.noContent().build()

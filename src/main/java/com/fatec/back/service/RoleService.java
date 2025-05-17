@@ -32,12 +32,17 @@ public class RoleService {
     }
 
     public Optional<Role> updateRole(Long id, RoleDTO updatedData) {
-        return roleRepository.findById(id).map(existing -> {
+    return roleRepository.findById(id).map(existing -> {
+        if (updatedData.name() != null) {
             existing.setName(updatedData.name());
+        }
+        if (updatedData.description() != null) {
             existing.setDescription(updatedData.description());
-            return roleRepository.save(existing);
-        });
+        }
+        return roleRepository.save(existing);
+    });
     }
+
 
     public boolean deleteRole(Long id) {
         return roleRepository.findById(id).map(role -> {
