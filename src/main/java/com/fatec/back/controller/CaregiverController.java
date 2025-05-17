@@ -20,7 +20,6 @@ import com.fatec.back.domain.Caregiver.CaregiverDTO;
 import com.fatec.back.service.CaregiverService;
 
 
-
 @RestController
 @RequestMapping("/caregiver")
 public class CaregiverController {
