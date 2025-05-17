@@ -1,12 +1,13 @@
 package com.fatec.back.service;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fatec.back.domain.Caregiver.Caregiver;
 import com.fatec.back.domain.Medication.Medication;
 import com.fatec.back.domain.Patient.Patient;
 import com.fatec.back.domain.RelationMP.RelationMP;
@@ -47,6 +48,14 @@ public class RelationMPService {
         Medication medication = medicationRepository.findById(dto.medication())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
         RelationMP relationMP = new RelationMP();
+
+        long totalUnits = switch (dto.frequencyUnit()) {
+        case HOURS -> Duration.between(dto.startDate().atStartOfDay(), dto.endDate().plusDays(1).atStartOfDay()).toHours() / dto.frequencyValue();
+        case DAYS -> ChronoUnit.DAYS.between(dto.startDate(), dto.endDate().plusDays(1)) / dto.frequencyValue();
+        case WEEKS -> ChronoUnit.WEEKS.between(dto.startDate(), dto.endDate().plusDays(1)) / dto.frequencyValue();
+        };
+
+        int totalDosage = (int) totalUnits * dto.dosage();
         relationMP.setStartDate(dto.startDate());
         relationMP.setEndDate(dto.endDate());
         relationMP.setDosage(dto.dosage());
@@ -56,11 +65,12 @@ public class RelationMPService {
         relationMP.setPatient(patient);
         relationMP.setCreatedBy(user);
         relationMP.setUpdatedBy(user);
+        relationMP.setTotalDosage(totalDosage);
 
         return relationMPRepository.save(relationMP);
     }
 
-   public Optional<RelationMP> updateHave(Long id, RelationMPDTO updatedData) {
+   public Optional<RelationMP> updateRelationMP(Long id, RelationMPDTO updatedData) {
     return relationMPRepository.findById(id).map(existing -> {
         if (updatedData.startDate() != null) {
             existing.setStartDate(updatedData.startDate());
@@ -93,11 +103,20 @@ public class RelationMPService {
             existing.setUpdatedBy(updater);
         }
 
+        long totalUnits = switch (existing.getFrequencyUnit()) {
+            case HOURS -> Duration.between(existing.getStartDate().atStartOfDay(), existing.getEndDate().plusDays(1).atStartOfDay()).toHours() / existing.getFrequencyValue();
+            case DAYS -> ChronoUnit.DAYS.between(existing.getStartDate(), existing.getEndDate().plusDays(1)) / existing.getFrequencyValue();
+            case WEEKS -> ChronoUnit.WEEKS.between(existing.getStartDate(), existing.getEndDate().plusDays(1)) / existing.getFrequencyValue();
+        };
+
+        int totalDosage = (int) totalUnits * existing.getDosage();
+        existing.setTotalDosage(totalDosage);
+
         return relationMPRepository.save(existing);
     });
     }
 
-    public boolean deleteHave(Long id, Long userId) {
+    public boolean deleteRelationMP(Long id, Long userId) {
         return relationMPRepository.findById(id).map(relationMP -> {
             relationMP.setDeleted(!relationMP.isDeleted());
             User updatedBy = userRepository.findById(userId)
