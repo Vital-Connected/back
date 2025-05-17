@@ -1,12 +1,12 @@
 package com.fatec.back.domain.User;
 
-import lombok.Data;
+import com.fatec.back.domain.Role.Role;
 
-@Data
-public class UserRequestDTO {
-    private String email;
-    private String password;
-    private String name;
-    private Long roleId;
-    private Long userId;
+public record UserRequestDTO(
+    String email,
+    String password,
+    String name,
+    Role role,
+    Long userId)
+{
 }
