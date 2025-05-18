@@ -18,6 +18,31 @@ import com.fatec.back.repository.PatientRepository;
 import com.fatec.back.repository.RelationMPRepository;
 import com.fatec.back.repository.UserRepository;
 
+/**
+ * Serviço responsável pelas operações de negócio relacionadas à relação entre 
+ * medicamentos e pacientes. Esta classe contém métodos para manipulação de dados 
+ * relacionados a essa relação, incluindo a criação, atualização, exclusão e 
+ * obtenção de registros de {@link RelationMP}.
+ * 
+ * O serviço interage diretamente com os repositórios de {@link RelationMP}, 
+ * {@link User}, {@link Patient} e {@link Medication} para realizar as operações 
+ * de persistência.
+ * 
+ * <p>Métodos principais:</p>
+ * <ul>
+ *     <li>{@code getAllRelationMPs()} - Recupera todas as relações entre medicamentos e pacientes.</li>
+ *     <li>{@code getRelationMPById(Long id)} - Recupera uma relação entre medicamento e paciente pelo ID.</li>
+ *     <li>{@code createRelationMP(RelationMPDTO dto)} - Cria uma nova relação entre medicamento e paciente.</li>
+ *     <li>{@code updateRelationMP(Long id, RelationMPDTO updatedData)} - Atualiza os dados de uma relação existente.</li>
+ *     <li>{@code deleteRelationMP(Long id, Long userId)} - Marca uma relação como deletada ou ativa novamente.</li>
+ * </ul>
+ * 
+ * @see RelationMP
+ * @see RelationMPDTO
+ * @see MedicationRepository
+ * @see PatientRepository
+ * @see UserRepository
+ */
 @Service
 public class RelationMPService {
     @Autowired
@@ -32,14 +57,31 @@ public class RelationMPService {
     @Autowired
     private MedicationRepository medicationRepository;
 
+    /**
+     * Recupera todas as relações entre medicamentos e pacientes cadastradas no sistema.
+     * 
+     * @return Lista de todas as relações entre medicamentos e pacientes.
+     */
     public List<RelationMP> getAllRelationMPs(){
         return relationMPRepository.findAll();
     }
 
+     /**
+     * Recupera uma relação entre medicamento e paciente pelo seu ID.
+     * 
+     * @param id ID da relação a ser recuperada.
+     * @return Um {@link Optional} contendo a relação encontrada.
+     */
     public Optional<RelationMP> getRelationMPById(Long id){
         return relationMPRepository.findById(id);
     }
 
+    /**
+     * Cria uma nova relação entre medicamento e paciente com base nos dados fornecidos.
+     * 
+     * @param dto Dados de transferência (DTO) com as informações da relação a ser criada.
+     * @return A relação recém-criada.
+     */
     public RelationMP createRelationMP(RelationMPDTO dto) {
         User user = userRepository.findById(dto.userId())
             .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
@@ -70,6 +112,13 @@ public class RelationMPService {
         return relationMPRepository.save(relationMP);
     }
 
+    /**
+     * Atualiza os dados de uma relação entre medicamento e paciente existente.
+     * 
+     * @param id ID da relação a ser atualizada.
+     * @param updatedData Dados atualizados fornecidos no DTO.
+     * @return A relação atualizada, caso encontrada.
+     */
    public Optional<RelationMP> updateRelationMP(Long id, RelationMPDTO updatedData) {
     return relationMPRepository.findById(id).map(existing -> {
         if (updatedData.startDate() != null) {
@@ -116,6 +165,13 @@ public class RelationMPService {
     });
     }
 
+     /**
+     * Marca uma relação entre medicamento e paciente como deletada ou ativa novamente.
+     * 
+     * @param id ID da relação a ser deletada ou reativada.
+     * @param userId ID do usuário que está realizando a operação.
+     * @return {@code true} se a operação foi bem-sucedida, {@code false} caso a relação não seja encontrada.
+     */
     public boolean deleteRelationMP(Long id, Long userId) {
         return relationMPRepository.findById(id).map(relationMP -> {
             relationMP.setDeleted(!relationMP.isDeleted());

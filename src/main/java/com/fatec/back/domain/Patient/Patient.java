@@ -30,6 +30,36 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
+/**
+ * Representa um paciente no sistema.
+ * <p>
+ * A classe {@code Patient} contém informações detalhadas sobre um paciente, incluindo sua data 
+ * de nascimento, condição médica e os usuários responsáveis por seu gerenciamento. Um paciente 
+ * está associado a um usuário (entidade {@link User}) através do campo {@code user}, e pode ter 
+ * um histórico médico e status de deletação.
+ * </p>
+ *
+ * Campos:
+ * <ul>
+ *     <li>{@code id} - Identificador único do paciente.</li>
+ *     <li>{@code user} - O usuário associado a este paciente, mapeado como uma relação 1-para-1.</li>
+ *     <li>{@code birthday} - Data de nascimento do paciente.</li>
+ *     <li>{@code patientCondition} - Condição médica do paciente.</li>
+ *     <li>{@code createdAt} - Data e hora de criação do registro do paciente.</li>
+ *     <li>{@code updatedAt} - Data e hora da última atualização do registro do paciente.</li>
+ *     <li>{@code createdBy} - Usuário responsável pela criação do registro, referenciado pela entidade {@link User}.</li>
+ *     <li>{@code updatedBy} - Usuário responsável pela última atualização do registro, referenciado pela entidade {@link User}.</li>
+ *     <li>{@code deleted} - Flag que indica se o paciente foi deletado (soft delete).</li>
+ * </ul>
+ *
+ * Relacionamentos:
+ * <ul>
+ *     <li>{@code user} - Relacionamento 1-para-1 com a entidade {@link User}, representando o usuário associado a este paciente.</li>
+ *     <li>{@code createdBy} e {@code updatedBy} - Relacionamentos com a entidade {@link User}, representando os usuários responsáveis pelas operações de criação e atualização, respectivamente.</li>
+ * </ul>
+ *
+ * @see User
+ */
 public class Patient {
     @Id
     @Column(name = "id_patient")

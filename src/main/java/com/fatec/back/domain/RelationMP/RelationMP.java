@@ -25,6 +25,49 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Representa a relação entre um medicamento e um paciente, incluindo detalhes sobre 
+ * a dosagem, frequência de administração e o período do tratamento.
+ * <p>
+ * A classe {@code RelationMP} é responsável por armazenar as informações relacionadas 
+ * à administração de um medicamento para um paciente. Ela contém dados sobre a dosagem, 
+ * frequência, o intervalo de tempo do tratamento, o medicamento prescrito, o paciente, 
+ * além de informações de auditoria sobre a criação e atualização do registro.
+ * </p>
+ *
+ * Campos:
+ * <ul>
+ *     <li>{@code dosage} - A dosagem do medicamento a ser administrada.</li>
+ *     <li>{@code frequencyValue} - O valor da frequência (ex: 2, 3, etc.).</li>
+ *     <li>{@code frequencyUnit} - A unidade de frequência, que pode ser horas, dias ou semanas.</li>
+ *     <li>{@code totalDosage} - A dosagem total do medicamento durante o período do tratamento.</li>
+ *     <li>{@code medication} - O medicamento prescrito para o paciente, representado pela entidade {@link Medication}.</li>
+ *     <li>{@code patient} - O paciente a quem o medicamento é prescrito, representado pela entidade {@link Patient}.</li>
+ *     <li>{@code startDate} - Data de início do tratamento com o medicamento.</li>
+ *     <li>{@code endDate} - Data de término do tratamento com o medicamento.</li>
+ *     <li>{@code createdAt} - Data e hora de criação do registro de relação entre paciente e medicamento.</li>
+ *     <li>{@code updatedAt} - Data e hora da última atualização do registro.</li>
+ *     <li>{@code createdBy} - O usuário responsável pela criação do registro, representado pela entidade {@link User}.</li>
+ *     <li>{@code updatedBy} - O usuário responsável pela última atualização do registro, representado pela entidade {@link User}.</li>
+ *     <li>{@code deleted} - Flag que indica se o registro foi deletado (soft delete).</li>
+ * </ul>
+ *
+ * Enum:
+ * <ul>
+ *     <li>{@code FrequencyUnit} - Unidade de frequência, podendo ser horas, dias ou semanas.</li>
+ * </ul>
+ *
+ * Relacionamentos:
+ * <ul>
+ *     <li>{@code medication} - Relacionamento com a entidade {@link Medication}, representando o medicamento prescrito.</li>
+ *     <li>{@code patient} - Relacionamento com a entidade {@link Patient}, representando o paciente que está sendo tratado.</li>
+ *     <li>{@code createdBy} e {@code updatedBy} - Relacionamentos com a entidade {@link User}, representando os usuários responsáveis pela criação e atualização do registro.</li>
+ * </ul>
+ *
+ * @see Medication
+ * @see Patient
+ * @see User
+ */
 @Entity
 @Table(name = "relations_mp")
 @Getter

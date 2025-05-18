@@ -22,6 +22,34 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Entidade que representa um medicamento no sistema.
+ * <p>
+ * A classe {@code Medication} armazena informações sobre um medicamento, incluindo seu nome, 
+ * a função do medicamento e informações de auditoria, como quando foi criado e atualizado, 
+ * e quem realizou essas operações. A classe também mantém o estado do medicamento (se foi 
+ * deletado ou não).
+ * </p>
+ *
+ * Campos:
+ * <ul>
+ *     <li>{@code id} - Identificador único do medicamento.</li>
+ *     <li>{@code name} - Nome do medicamento.</li>
+ *     <li>{@code medicationFunction} - Função ou propósito do medicamento.</li>
+ *     <li>{@code createdAt} - Data e hora de criação do medicamento.</li>
+ *     <li>{@code updatedAt} - Data e hora de atualização do medicamento.</li>
+ *     <li>{@code createdBy} - Usuário responsável pela criação do medicamento, referenciado pela entidade {@link User}.</li>
+ *     <li>{@code updatedBy} - Usuário responsável pela última atualização do medicamento, referenciado pela entidade {@link User}.</li>
+ *     <li>{@code deleted} - Flag que indica se o medicamento foi deletado (soft delete).</li>
+ * </ul>
+ *
+ * Relacionamentos:
+ * <ul>
+ *     <li>{@code createdBy} e {@code updatedBy} - Relacionamentos com a entidade {@link User}, representando os usuários responsáveis pelas operações de criação e atualização, respectivamente.</li>
+ * </ul>
+ *
+ * @see User
+ */
 @Entity
 @Table(name = "medication")
 @Getter

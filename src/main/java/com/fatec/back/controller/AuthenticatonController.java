@@ -22,6 +22,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * Controlador responsável pela autenticação de usuários no sistema.
+ * Este controlador fornece endpoints para login e registro de usuários.
+ */
     @RestController
     @RequestMapping("auth")
     public class AuthenticatonController {
@@ -37,6 +41,13 @@ import org.springframework.web.bind.annotation.RequestBody;
         @Autowired
         private AuthenticationManager authenticationManager;
 
+        /**
+         * Endpoint para login do usuário.
+         * 
+         * @param data Dados de login enviados pelo usuário, contendo email e senha.
+         * @return Retorna um objeto LoginResponseDTO contendo o token de autenticação.
+         * @see LoginDTO
+         */
         @PostMapping("/login")
         public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginDTO data) {
             var userPassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());            
@@ -47,6 +58,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 
         }
 
+        /**
+         * Endpoint para registro de um novo usuário no sistema.
+         * 
+         * @param data Dados de cadastro do usuário, contendo informações como
+         *             email, nome, senha e role.
+         * @return Retorna uma mensagem de sucesso ou erro, dependendo da operação.
+         * @throws RuntimeException Se a role não for encontrada no banco de dados.
+         */
         @PostMapping("/register")
         public ResponseEntity<String> register(@RequestBody @Valid UserRequestDTO data) {
             if (this.repository.findByEmail(data.email()) != null) {

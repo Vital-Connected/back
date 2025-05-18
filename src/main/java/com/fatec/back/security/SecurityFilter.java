@@ -17,6 +17,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Filtro de segurança que intercepta cada requisição HTTP para verificar e autenticar o token JWT.
+ * 
+ * <p>
+ * Esta classe estende {@link OncePerRequestFilter}, garantindo que o filtro seja executado uma única vez por requisição.
+ * Ela valida o token JWT presente no cabeçalho `Authorization`, autentica o usuário e atualiza o {@link SecurityContextHolder}.
+ * </p>
+ */
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
@@ -25,6 +33,16 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository repository;
 
+    /**
+     * Intercepta a requisição e verifica se há um token JWT válido.
+     * Se o token for válido, autentica o usuário e atualiza o contexto de segurança.
+     *
+     * @param request requisição HTTP
+     * @param response resposta HTTP
+     * @param filterChain cadeia de filtros
+     * @throws ServletException se ocorrer um erro de servlet
+     * @throws IOException se ocorrer um erro de I/O
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException,IOException {
         String path = request.getRequestURI();
@@ -44,6 +62,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    /**
+     * Recupera o token JWT do cabeçalho `Authorization` da requisição.
+     * 
+     * @param request a requisição HTTP
+     * @return o token sem o prefixo "Bearer ", ou {@code null} se não existir
+     */
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
